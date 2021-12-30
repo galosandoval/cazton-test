@@ -8,6 +8,7 @@ import Config from "./config/Config";
 const AppStyles = styled.main`
   display: grid;
   place-items: center;
+  padding: 2rem;
 `;
 
 function App() {

@@ -25,6 +25,12 @@ export const Card = styled.div`
   justify-content: center;
   align-items: center;
 
+  img {
+    object-fit: contain;
+    height: 20rem;
+    width: 20rem;
+  }
+
   form {
     display: flex;
     flex-direction: column;
