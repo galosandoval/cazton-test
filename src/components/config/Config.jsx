@@ -51,17 +51,15 @@ const Config = () => {
 
   const handleClick = (event) => {
     event.preventDefault();
-    const optionToSave = { name };
-    optionToSave.array = options;
+
+    const optionToSave = { name, array: options };
     dispatch(add(optionToSave));
-    const newOptions = [...options];
-    const setToFalse = newOptions.reduce((array, item) => {
-      console.log({ item });
-      item.isActive = !item.isActive;
-      array.push(item);
-      return array;
-    }, []);
-    console.log({ setToFalse });
+
+    const setToFalse = options.map((o) => ({
+      name: o.name,
+      isActive: false
+    }));
+
     setOptions(setToFalse);
     setName("");
   };
@@ -122,29 +120,27 @@ const Config = () => {
           d.isActive && productsIsSuccess && d.name === "List of products" ? (
             products.map((p, i) => (
               //  title, picture, category, price and description.
-              <Card>
-                <div key={p?.title + i}>
-                  <h1>{p.title}</h1>
-                  <img src={p.image} alt="product" />
-                  <p>{p.price}</p>
-                  <p>{p.description}</p>
-                </div>
+              <Card key={p?.title + i}>
+                <h1>{p.title}</h1>
+                <img src={p.image} alt="product" />
+                <p>{p.price}</p>
+                <p>{p.description}</p>
               </Card>
             ))
           ) : // {/* Total Products Count */}
           d.isActive && productsIsSuccess && d.name === "Total products" ? (
-            <Card>
-              <p key={d.name + products.length}>{products.length}</p>
+            <Card key={d.name + products.length}>
+              <p>{products.length}</p>
             </Card>
           ) : // {/* Total Customer Count */}
           d.isActive && usersIsSuccess && d.name === "Total Customers" ? (
-            <Card>
-              <p key={d.name + users.length + " users"}>{users.length}</p>
+            <Card key={d.name + users.length + " users"}>
+              <p>{users.length}</p>
             </Card>
           ) : // {/* Latest Product */}
           d.isActive && productsIsSuccess && d.name === "Latest Product" ? (
-            <Card>
-              <div key={d.name + " product"}>
+            <Card key={d.name + " product"}>
+              <div>
                 <h1>{products[randomProductNumber()]?.title}</h1>
                 <img src={products[randomProductNumber()]?.image} alt="product" />
                 <p>{products[randomProductNumber()]?.price}</p>
@@ -155,8 +151,8 @@ const Config = () => {
           d.isActive && productsIsSuccess && d.name === "Display Categories" ? (
             categories.map((c) => (
               //  title, picture, category, price and description.
-              <Card>
-                <p key={c}>{c}</p>
+              <Card key={c}>
+                <p>{c}</p>
               </Card>
             ))
           ) : null
