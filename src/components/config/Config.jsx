@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCategories, useGetProducts, useGetUsers } from "../../services/productsService";
@@ -36,8 +36,7 @@ const Config = () => {
   const [name, setName] = useState("");
   const [dashToDisplay, setDashToDisplay] = useState([]);
   const [checkbox, setCheckbox] = useState(() => new Array(config.length).fill(false));
-
-  const randomProductNumber = () => randomProduct();
+  const [randomIndex, setRandomIndex] = useState(0);
 
   const {
     data: products,
@@ -47,13 +46,8 @@ const Config = () => {
   const { data: users, isLoading: usersIsLoading, isSuccess: usersIsSuccess } = useGetUsers();
   const { data: categories, isLoading: categoriesIsLoading } = useGetCategories();
 
-  if (productsIsLoading || usersIsLoading || categoriesIsLoading) {
-    return <h1>Loading...</h1>;
-  }
-
   const handleChange = (index) => (event) => {
     const toChange = [...options];
-    console.log(toChange);
 
     toChange[index].isActive = event.target.checked;
     setOptions(toChange);
@@ -81,6 +75,14 @@ const Config = () => {
 
     setDashToDisplay(array);
   };
+
+  useEffect(() => {
+    setRandomIndex(randomProduct);
+  }, []);
+
+  if (productsIsLoading || usersIsLoading || categoriesIsLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <ConfigStyles>
@@ -156,19 +158,18 @@ const Config = () => {
           ) : // {/* Latest Product */}
           d.isActive && productsIsSuccess && d.name === "Latest Product" ? (
             <ProductCard key={d.name + " product"}>
-              <h1>{products[randomProductNumber()]?.title}</h1>
+              <h1>{products[randomIndex]?.title}</h1>
               <Content>
-                <img src={products[randomProductNumber()]?.image} alt="product" />
+                <img src={products[randomIndex]?.image} alt="product" />
                 <TextContainer>
-                  <p>{products[randomProductNumber()]?.price}</p>
-                  <p>{products[randomProductNumber()]?.description}</p>
+                  <p>{products[randomIndex]?.price}</p>
+                  <p>{products[randomIndex]?.description}</p>
                 </TextContainer>
               </Content>
             </ProductCard>
           ) : // {/* Display Categories */}
           d.isActive && productsIsSuccess && d.name === "Display Categories" ? (
             categories.map((c) => (
-              //  title, picture, category, price and description.
               <Card key={c}>
                 <p>{c}</p>
               </Card>
