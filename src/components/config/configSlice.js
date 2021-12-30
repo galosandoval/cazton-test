@@ -8,14 +8,11 @@ export const configSlice = createSlice({
   reducers: {
     add: (state, action) => {
       state.value.push(action.payload);
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { add, incrementByAmount } = configSlice.actions;
+export const { add } = configSlice.actions;
 
 export default configSlice.reducer;
