@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useGetCategories, useGetProducts, useGetUsers } from "../../services/productsService";
 import { randomProduct } from "../../utils/chooseRandomProduct";
 import Checkbox from "./Checkbox";
-import { ConfigStyles } from "./ConfigStyles";
+import { add } from "./configSlice";
+import { Card, CheckBoxLabel, ConfigStyles, TextInput, Top } from "./ConfigStyles";
 
 const initialOption = [
   {
@@ -16,12 +19,13 @@ const initialOption = [
 ];
 
 const Config = () => {
+  const dispatch = useDispatch();
+  const config = useSelector((state) => state.config);
+
   const [options, setOptions] = useState(initialOption);
   const [name, setName] = useState("");
   const [dashToDisplay, setDashToDisplay] = useState([]);
-  const [checkbox, setCheckbox] = useState(() =>
-    new Array(JSON.parse(window.localStorage.getItem("dashboard"))?.length).fill(false)
-  );
+  const [checkbox, setCheckbox] = useState(() => new Array(config.length).fill(false));
 
   const randomProductNumber = () => randomProduct();
 
@@ -39,22 +43,27 @@ const Config = () => {
 
   const handleChange = (index) => (event) => {
     const toChange = [...options];
+    console.log(toChange);
 
     toChange[index].isActive = event.target.checked;
     setOptions(toChange);
   };
 
-  const handleClick = () => {
+  const handleClick = (event) => {
+    event.preventDefault();
     const optionToSave = { name };
-    if (window.localStorage.getItem("dashboard")) {
-      const storage = JSON.parse(window.localStorage.getItem("dashboard"));
-      optionToSave.array = options;
-      storage.push(optionToSave);
-      window.localStorage.setItem("dashboard", JSON.stringify(storage));
-    } else {
-      optionToSave.array = options;
-      window.localStorage.setItem("dashboard", JSON.stringify([optionToSave]));
-    }
+    optionToSave.array = options;
+    dispatch(add(optionToSave));
+    const newOptions = [...options];
+    const setToFalse = newOptions.reduce((array, item) => {
+      console.log({ item });
+      item.isActive = !item.isActive;
+      array.push(item);
+      return array;
+    }, []);
+    console.log({ setToFalse });
+    setOptions(setToFalse);
+    setName("");
   };
 
   const handleDisplayDash = (array, index) => {
@@ -67,69 +76,88 @@ const Config = () => {
 
   return (
     <ConfigStyles>
-      Create a dashboard:
-      {options.map((o, i) => (
-        <label key={o.name}>
-          {o.name}
-          <input type="checkbox" name={o.name} checked={o.isActive} onChange={handleChange(i)} />
-        </label>
-      ))}
-      <form>
-        <input
-          required
-          type="text"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-        />
-        <button onClick={handleClick}>Create Dashboard</button>
-      </form>
-      {window.localStorage.getItem("dashboard") && (
-        <>
-          <p>Display your dashboard:</p>
-          <ul>
-            {JSON.parse(window.localStorage.getItem("dashboard")).map((dash, index) => (
-              <div key={dash.name}>
-                <Checkbox
-                  dash={dash}
-                  checkbox={checkbox[index]}
-                  handleDisplayDash={() => handleDisplayDash(dash.array, index)}
-                />
-              </div>
-            ))}
-          </ul>
-        </>
-      )}
-      {dashToDisplay.length > 1 &&
+      <Top>
+        <Card>
+          Create a dashboard:
+          {options.map((o, i) => (
+            <CheckBoxLabel key={o.name}>
+              {o.name}
+              <input
+                type="checkbox"
+                name={o.name}
+                checked={o.isActive}
+                onChange={handleChange(i)}
+              />
+            </CheckBoxLabel>
+          ))}
+          <form>
+            <TextInput
+              required
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+            <button onClick={handleClick}>Create Dashboard</button>
+          </form>
+        </Card>
+        {config.value.length > 0 && (
+          <Card>
+            <p>Display your dashboard:</p>
+            <ul>
+              {config.value.map((dash, index) => (
+                <div key={dash.name + index}>
+                  <Checkbox
+                    dash={dash}
+                    checkbox={checkbox[index]}
+                    handleDisplayDash={() => handleDisplayDash(dash.array, index)}
+                  />
+                </div>
+              ))}
+            </ul>
+          </Card>
+        )}
+      </Top>
+      {dashToDisplay.length > 0 &&
         dashToDisplay.map((d) =>
           d.isActive && productsIsSuccess && d.name === "List of products" ? (
-            products.map((p) => (
+            products.map((p, i) => (
               //  title, picture, category, price and description.
-              <>
-                <h1>{p.title}</h1>
-                <img src={p.image} alt="product" />
-                <p>{p.price}</p>
-                <p>{p.description}</p>
-              </>
+              <Card>
+                <div key={p?.title + i}>
+                  <h1>{p.title}</h1>
+                  <img src={p.image} alt="product" />
+                  <p>{p.price}</p>
+                  <p>{p.description}</p>
+                </div>
+              </Card>
             ))
           ) : // {/* Total Products Count */}
           d.isActive && productsIsSuccess && d.name === "Total products" ? (
-            <p>{products.length}</p>
+            <Card>
+              <p key={d.name + products.length}>{products.length}</p>
+            </Card>
           ) : // {/* Total Customer Count */}
           d.isActive && usersIsSuccess && d.name === "Total Customers" ? (
-            <p>{users.length}</p>
+            <Card>
+              <p key={d.name + users.length + " users"}>{users.length}</p>
+            </Card>
           ) : // {/* Latest Product */}
           d.isActive && productsIsSuccess && d.name === "Latest Product" ? (
-            <>
-              <h1>{products[randomProductNumber].title}</h1>
-              <img src={products[randomProductNumber].image} alt="product" />
-              <p>{products[randomProductNumber].price}</p>
-              <p>{products[randomProductNumber].description}</p>
-            </>
+            <Card>
+              <div key={d.name + " product"}>
+                <h1>{products[randomProductNumber()]?.title}</h1>
+                <img src={products[randomProductNumber()]?.image} alt="product" />
+                <p>{products[randomProductNumber()]?.price}</p>
+                <p>{products[randomProductNumber()]?.description}</p>
+              </div>
+            </Card>
           ) : // {/* Display Categories */}
           d.isActive && productsIsSuccess && d.name === "Display Categories" ? (
             categories.map((c) => (
               //  title, picture, category, price and description.
-              <p key={c}>{c}</p>
+              <Card>
+                <p key={c}>{c}</p>
+              </Card>
             ))
           ) : null
         )}

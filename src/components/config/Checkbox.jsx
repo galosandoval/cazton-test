@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const Checkbox = ({dash, checkbox, handleDisplayDash}) => {
+const Checkbox = ({ dash, checkbox, handleDisplayDash }) => {
   return (
     <>
       <li>{dash.name}</li>
@@ -12,6 +12,6 @@ const Checkbox = ({dash, checkbox, handleDisplayDash}) => {
       />
     </>
   );
-}
+};
 
-export default Checkbox
+export default Checkbox;
