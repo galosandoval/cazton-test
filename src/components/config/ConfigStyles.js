@@ -25,10 +25,15 @@ export const Card = styled.div`
   justify-content: center;
   align-items: center;
 
+  h1 {
+    font-size: 1.8rem;
+  }
+
   img {
     object-fit: contain;
     height: 20rem;
     width: 20rem;
+    flex: 0 0 50%;
   }
 
   form {
@@ -44,6 +49,19 @@ export const Card = styled.div`
     place-items: center;
     border-radius: 5px;
   }
+`;
+
+export const ProductCard = styled(Card)``;
+
+export const Content = styled.div`
+  display: flex;
+`;
+
+export const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
 `;
 
 export const CheckBoxLabel = styled.label`

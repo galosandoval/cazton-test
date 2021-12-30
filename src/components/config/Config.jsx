@@ -3,9 +3,19 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCategories, useGetProducts, useGetUsers } from "../../services/productsService";
 import { randomProduct } from "../../utils/chooseRandomProduct";
+import { dollarUS } from "../../utils/currency";
 import Checkbox from "./Checkbox";
 import { add } from "./configSlice";
-import { Card, CheckBoxLabel, ConfigStyles, TextInput, Top } from "./ConfigStyles";
+import {
+  Card,
+  CheckBoxLabel,
+  ConfigStyles,
+  Content,
+  TextContainer,
+  ProductCard,
+  TextInput,
+  Top
+} from "./ConfigStyles";
 
 const initialOption = [
   {
@@ -95,7 +105,9 @@ const Config = () => {
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
-            <button onClick={handleClick}>Create Dashboard</button>
+            <button disabled={name.length === 0} onClick={handleClick}>
+              Create Dashboard
+            </button>
           </form>
         </Card>
         {config.value.length > 0 && (
@@ -120,12 +132,16 @@ const Config = () => {
           d.isActive && productsIsSuccess && d.name === "List of products" ? (
             products.map((p, i) => (
               //  title, picture, category, price and description.
-              <Card key={p?.title + i}>
+              <ProductCard key={p?.title + i}>
                 <h1>{p.title}</h1>
-                <img src={p.image} alt="product" />
-                <p>{p.price}</p>
-                <p>{p.description}</p>
-              </Card>
+                <Content>
+                  <img src={p.image} alt="product" />
+                  <TextContainer>
+                    <p>{dollarUS.format(p.price)}</p>
+                    <p>{p.description}</p>
+                  </TextContainer>
+                </Content>
+              </ProductCard>
             ))
           ) : // {/* Total Products Count */}
           d.isActive && productsIsSuccess && d.name === "Total products" ? (
@@ -139,14 +155,16 @@ const Config = () => {
             </Card>
           ) : // {/* Latest Product */}
           d.isActive && productsIsSuccess && d.name === "Latest Product" ? (
-            <Card key={d.name + " product"}>
-              <div>
-                <h1>{products[randomProductNumber()]?.title}</h1>
+            <ProductCard key={d.name + " product"}>
+              <h1>{products[randomProductNumber()]?.title}</h1>
+              <Content>
                 <img src={products[randomProductNumber()]?.image} alt="product" />
-                <p>{products[randomProductNumber()]?.price}</p>
-                <p>{products[randomProductNumber()]?.description}</p>
-              </div>
-            </Card>
+                <TextContainer>
+                  <p>{products[randomProductNumber()]?.price}</p>
+                  <p>{products[randomProductNumber()]?.description}</p>
+                </TextContainer>
+              </Content>
+            </ProductCard>
           ) : // {/* Display Categories */}
           d.isActive && productsIsSuccess && d.name === "Display Categories" ? (
             categories.map((c) => (
