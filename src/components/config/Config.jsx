@@ -53,7 +53,7 @@ const Config = () => {
     setOptions(toChange);
   };
 
-  const handleClick = (event) => {
+  const handleCreateDashboard = (event) => {
     event.preventDefault();
 
     const optionToSave = { name, array: options };
@@ -107,7 +107,7 @@ const Config = () => {
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
-            <button disabled={name.length === 0} onClick={handleClick}>
+            <button disabled={name.length === 0} onClick={handleCreateDashboard}>
               Create Dashboard
             </button>
           </form>
