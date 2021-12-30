@@ -25,3 +25,8 @@ The app should allow you to create multiple dashboards which will be a combinati
 
 
 Note: You can use the Fake Store API to fetch data.
+
+## Available scripts
+```
+npm start
+```
