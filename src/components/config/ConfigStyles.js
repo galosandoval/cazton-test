@@ -51,8 +51,6 @@ export const Card = styled.div`
   }
 `;
 
-export const ProductCard = styled(Card)``;
-
 export const Content = styled.div`
   display: flex;
 `;

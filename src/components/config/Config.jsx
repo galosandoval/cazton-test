@@ -134,7 +134,7 @@ const Config = () => {
           d.isActive && productsIsSuccess && d.name === "List of products" ? (
             products.map((p, i) => (
               //  title, picture, category, price and description.
-              <ProductCard key={p?.title + i}>
+              <Card key={p?.title + i}>
                 <h1>{p.title}</h1>
                 <Content>
                   <img src={p.image} alt="product" />
@@ -143,7 +143,7 @@ const Config = () => {
                     <p>{p.description}</p>
                   </TextContainer>
                 </Content>
-              </ProductCard>
+              </Card>
             ))
           ) : // {/* Total Products Count */}
           d.isActive && productsIsSuccess && d.name === "Total products" ? (
