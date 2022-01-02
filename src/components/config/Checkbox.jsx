@@ -1,6 +1,6 @@
 import React from "react";
 
-const Checkbox = ({ dash, checkbox, handleDisplayDash }) => {
+const Checkbox = ({ dash, handleDisplayDash }) => {
   return (
     <>
       <li>{dash.name}</li>

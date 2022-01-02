@@ -1,7 +1,7 @@
 import styled from "styled-components/macro";
-import { colorBackground, colorPrimary, colorWhite } from "../../styles/globalVariables";
+import { colorBackground, colorPrimary, colorWhite, ffSpline } from "../../styles/globalVariables";
 
-export const ConfigStyles = styled.ul`
+export const ConfigStyles = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -24,12 +24,14 @@ export const Card = styled.div`
   gap: 1rem;
   justify-content: center;
   align-items: center;
-  width: max(650px, 70%);
   align-self: center;
 
   h1 {
     font-size: 1.8rem;
     text-align: center;
+    font-family: ${ffSpline};
+    font-weight: 500;
+    color: ${colorBackground};
   }
 
   img {
@@ -45,6 +47,7 @@ export const Card = styled.div`
     flex-direction: column;
     gap: 1rem;
   }
+
   button {
     background-color: ${colorBackground};
     color: white;
@@ -52,22 +55,41 @@ export const Card = styled.div`
     display: grid;
     place-items: center;
     border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 1px solid ${colorBackground};
+    cursor: pointer;
+
+    &:hover {
+      background-color: white;
+      color: ${colorBackground};
+    }
+
+    &:disabled {
+      background-color: ${colorPrimary};
+    }
   }
+
+  ul > div {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+export const CardContainerStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 export const Content = styled.div`
   display: flex;
 `;
 
-export const TextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-`;
-
 export const CheckBoxLabel = styled.label`
   cursor: pointer;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const TextInput = styled.input`
@@ -75,4 +97,11 @@ export const TextInput = styled.input`
   padding: 1rem 2rem;
   border: none;
   border-radius: 5px;
+  transition: all ease 0.3s;
+
+  &:focus,
+  &:focus-within {
+    outline: none;
+    box-shadow: 0 0.5rem 1rem rgba(0 0 0 / 0.15);
+  }
 `;

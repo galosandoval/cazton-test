@@ -18,7 +18,6 @@ function App() {
       <GlobalStyle />
       <AppStyles>
         <Config />
-        {/* The rest of your application */}
       </AppStyles>
     </QueryClientProvider>
   );

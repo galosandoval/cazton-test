@@ -11,3 +11,4 @@ export const colorTertiary = "#499F68";
  * Font Families
  */
 export const ffRoboto = "'Roboto', sans-serif";
+export const ffSpline = "'Spline Sans', sans-serif";

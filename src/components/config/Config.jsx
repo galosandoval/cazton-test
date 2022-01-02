@@ -3,18 +3,11 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCategories, useGetProducts, useGetUsers } from "../../services/productsService";
 import { randomProduct } from "../../utils/chooseRandomProduct";
-import { dollarUS } from "../../utils/currency";
+import ProductCard from "../productCard/ProductCard";
+import CardContainer from "./CardContainer";
 import Checkbox from "./Checkbox";
 import { add } from "./configSlice";
-import {
-  Card,
-  CheckBoxLabel,
-  ConfigStyles,
-  Content,
-  TextContainer,
-  TextInput,
-  Top
-} from "./ConfigStyles";
+import { Card, CheckBoxLabel, ConfigStyles, TextInput, Top } from "./ConfigStyles";
 
 const initialOption = [
   {
@@ -47,7 +40,6 @@ const Config = () => {
 
   const handleChange = (index) => (event) => {
     const toChange = [...options];
-
     toChange[index].isActive = event.target.checked;
     setOptions(toChange);
   };
@@ -119,7 +111,6 @@ const Config = () => {
                 <div key={dash.name + index}>
                   <Checkbox
                     dash={dash}
-                    checkbox={checkbox[index]}
                     handleDisplayDash={() => handleDisplayDash(dash.array, index)}
                   />
                 </div>
@@ -131,19 +122,7 @@ const Config = () => {
       {dashToDisplay.length > 0 &&
         dashToDisplay.map((d) =>
           d.isActive && productsIsSuccess && d.name === "List of products" ? (
-            products.map((p, i) => (
-              //  title, picture, category, price and description.
-              <Card key={p?.title + i}>
-                <h1>{p.title}</h1>
-                <Content>
-                  <img src={p.image} alt="product" />
-                  <TextContainer>
-                    <p>{dollarUS.format(p.price)}</p>
-                    <p>{p.description}</p>
-                  </TextContainer>
-                </Content>
-              </Card>
-            ))
+            <CardContainer key={d.name} products={products} />
           ) : // {/* Total Products Count */}
           d.isActive && productsIsSuccess && d.name === "Total products" ? (
             <Card key={d.name + products.length}>
@@ -156,16 +135,7 @@ const Config = () => {
             </Card>
           ) : // {/* Latest Product */}
           d.isActive && productsIsSuccess && d.name === "Latest Product" ? (
-            <Card key={d.name + " product"}>
-              <h1>{products[randomIndex]?.title}</h1>
-              <Content>
-                <img src={products[randomIndex]?.image} alt="product" />
-                <TextContainer>
-                  <p>{products[randomIndex]?.price}</p>
-                  <p>{products[randomIndex]?.description}</p>
-                </TextContainer>
-              </Content>
-            </Card>
+            <ProductCard p={products[randomIndex]} i={randomIndex} />
           ) : // {/* Display Categories */}
           d.isActive && productsIsSuccess && d.name === "Display Categories" ? (
             categories.map((c) => (
