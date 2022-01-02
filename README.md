@@ -1,3 +1,5 @@
+### Delpoyed Url: https://cazton-test.vercel.app/
+
 # Timed React Challenge
 
 Create a metadata driven dashboard using Reactjs. It contains different configurable components.
@@ -30,3 +32,11 @@ Note: You can use the Fake Store API to fetch data.
 ```
 npm start
 ```
+
+## How I solved the problem
+
+- Here is where I use custom react-query hooks to handle the http request: https://github.com/galosandoval/cazton-test/blob/main/src/services/productsService.js
+
+- Here is where I use Redux: https://github.com/galosandoval/cazton-test/blob/main/src/components/config/configSlice.js
+
+- Here is the main component with the main functionality: https://github.com/galosandoval/cazton-test/blob/main/src/components/config/Config.jsx
