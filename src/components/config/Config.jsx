@@ -12,7 +12,6 @@ import {
   ConfigStyles,
   Content,
   TextContainer,
-  ProductCard,
   TextInput,
   Top
 } from "./ConfigStyles";
@@ -157,7 +156,7 @@ const Config = () => {
             </Card>
           ) : // {/* Latest Product */}
           d.isActive && productsIsSuccess && d.name === "Latest Product" ? (
-            <ProductCard key={d.name + " product"}>
+            <Card key={d.name + " product"}>
               <h1>{products[randomIndex]?.title}</h1>
               <Content>
                 <img src={products[randomIndex]?.image} alt="product" />
@@ -166,7 +165,7 @@ const Config = () => {
                   <p>{products[randomIndex]?.description}</p>
                 </TextContainer>
               </Content>
-            </ProductCard>
+            </Card>
           ) : // {/* Display Categories */}
           d.isActive && productsIsSuccess && d.name === "Display Categories" ? (
             categories.map((c) => (
