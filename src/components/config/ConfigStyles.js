@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { colorBackground, colorPrimary, colorWhite } from "../../styles/globalVariables";
 
 export const ConfigStyles = styled.ul`
@@ -24,9 +24,12 @@ export const Card = styled.div`
   gap: 1rem;
   justify-content: center;
   align-items: center;
+  width: max(650px, 70%);
+  align-self: center;
 
   h1 {
     font-size: 1.8rem;
+    text-align: center;
   }
 
   img {
@@ -34,6 +37,7 @@ export const Card = styled.div`
     height: 20rem;
     width: 20rem;
     flex: 0 0 50%;
+    align-self: center;
   }
 
   form {
